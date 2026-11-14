@@ -1,0 +1,304 @@
+/* 與圖片工具箱相同的設計語彙：白底、細線、單一紅色強調、等寬數字，沒有卡片與陰影 */
+:root {
+  --color-bg: #ffffff;
+  --color-fg: #0a0a0a;
+  --color-fg-soft: #555555;
+  --color-bg-soft: #f7f7f7;
+  --color-line: #e5e5e5;
+  --color-line-strong: #bdbdbd;
+  --color-accent: #d4391c;
+  --color-accent-fg: #ffffff;
+
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 32px;
+  --space-lg: 64px;
+  --space-xl: 120px;
+
+  --font-sans: 'PingFang TC', 'Noto Sans TC', 'Microsoft JhengHei', 'Helvetica Neue', Arial,
+    sans-serif;
+  --font-mono: 'SF Mono', Menlo, Consolas, monospace;
+
+  color-scheme: light dark;
+  font-family: var(--font-sans);
+  color: var(--color-fg);
+  background: var(--color-bg);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #0a0a0a;
+    --color-fg: #f5f5f5;
+    --color-fg-soft: #b0b0b0;
+    --color-bg-soft: #151515;
+    --color-line: #2a2a2a;
+    --color-line-strong: #4a4a4a;
+    --color-accent: #ff5a3c;
+    --color-accent-fg: #0a0a0a;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--color-bg);
+  font-size: 15px;
+  line-height: 1.75;
+  letter-spacing: 0.005em;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.num {
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: var(--space-lg) var(--space-md);
+}
+
+/* 頁首 */
+.head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: 48px;
+}
+
+.mark {
+  flex: none;
+  border-radius: 50%;
+}
+
+.head h1 {
+  margin: 0;
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+
+.sub {
+  margin: 4px 0 0;
+  color: var(--color-fg-soft);
+  font-size: 13px;
+}
+
+/* 簡介 */
+.intro {
+  max-width: 560px;
+  margin-bottom: var(--space-lg);
+}
+
+.intro p {
+  margin: 0 0 var(--space-xs);
+}
+
+/* 專案列表：沒有卡片，只有 hairline 與留白 */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin-bottom: 20px;
+}
+
+.section-head h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.count {
+  color: var(--color-fg-soft);
+  font-size: 13px;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: var(--space-sm);
+  align-items: start;
+  padding: 28px 0;
+  border-top: 1px solid var(--color-line);
+}
+
+.idx {
+  color: var(--color-fg-soft);
+  font-size: 13px;
+  line-height: 2.2;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.name {
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.name small {
+  margin-left: 4px;
+  color: var(--color-fg-soft);
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.desc {
+  max-width: 560px;
+  color: var(--color-fg-soft);
+}
+
+.tags {
+  margin-top: 4px;
+  color: var(--color-fg-soft);
+  font-size: 12px;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding-top: 4px;
+  font-size: 13px;
+}
+
+.status {
+  color: var(--color-fg-soft);
+}
+
+.status.live {
+  color: var(--color-accent);
+}
+
+.status.live::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 8px;
+  background: var(--color-accent);
+  vertical-align: 1px;
+}
+
+.arrow {
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* 可點擊的列：整列是連結，滑過時標題變強調色、箭頭右移 */
+a.row .name,
+a.row .arrow {
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+a.row:hover .name {
+  color: var(--color-accent);
+}
+
+a.row:hover .arrow {
+  color: var(--color-accent);
+  transform: translate(2px, -2px);
+}
+
+/* 尚未上線的專案：整體淡化，不可點 */
+.row.soon {
+  opacity: 0.55;
+}
+
+/* 頁尾 */
+.foot {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--color-line);
+  color: var(--color-fg-soft);
+  font-size: 13px;
+}
+
+.foot a {
+  border-bottom: 1px solid currentColor;
+}
+
+.foot a:hover {
+  color: var(--color-fg);
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: var(--space-md) var(--space-sm);
+  }
+
+  .head {
+    margin-bottom: var(--space-md);
+  }
+
+  .intro {
+    margin-bottom: 48px;
+  }
+
+  .row {
+    grid-template-columns: 1fr auto;
+    padding: 24px 0;
+  }
+
+  .idx {
+    grid-column: 1 / -1;
+    line-height: 1.4;
+  }
+
+  .name {
+    font-size: 20px;
+  }
+
+  .name small {
+    display: block;
+    margin: 2px 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a.row .name,
+  a.row .arrow {
+    transition: none;
+  }
+}
